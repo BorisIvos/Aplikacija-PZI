@@ -9,7 +9,19 @@ exports.__esModule = true;
 var common_1 = require("@nestjs/common");
 var typeorm_1 = require("@nestjs/typeorm");
 var database_configuration_1 = require("config/database.configuration");
+var administrator_entity_1 = require("entities/administrator.entity");
+var article_feuters_entity_1 = require("entities/article-feuters.entity");
+var article_price_1 = require("entities/article-price");
+var article_entity_1 = require("entities/article.entity");
+var cart_article_entity_1 = require("entities/cart-article.entity");
+var cart_entity_1 = require("entities/cart.entity");
+var category_entity_1 = require("entities/category.entity");
+var features_entity_1 = require("entities/features.entity");
+var order_entity_1 = require("entities/order.entity");
+var photo_entity_1 = require("entities/photo.entity");
+var user_entity_1 = require("entities/user.entity");
 var app_controller_1 = require("./app.controller");
+var administrator_service_1 = require("./services/administrator/administrator.service");
 database_configuration_1.DatabaseConfiguration;
 var AppModule = /** @class */ (function () {
     function AppModule() {
@@ -24,11 +36,23 @@ var AppModule = /** @class */ (function () {
                     username: database_configuration_1.DatabaseConfiguration.username,
                     password: database_configuration_1.DatabaseConfiguration.password,
                     database: database_configuration_1.DatabaseConfiguration.database,
-                    entities: []
-                })
+                    entities: [administrator_entity_1.Administrator,
+                        article_feuters_entity_1.ArticleFeature,
+                        article_price_1.ArticlePrice,
+                        article_entity_1.Article,
+                        cart_article_entity_1.CartArticle,
+                        cart_entity_1.Cart,
+                        category_entity_1.Category,
+                        features_entity_1.Feature,
+                        order_entity_1.Order,
+                        photo_entity_1.Photo,
+                        user_entity_1.User,
+                    ]
+                }),
+                typeorm_1.TypeOrmModule.forFeature([administrator_entity_1.Administrator])
             ],
             controllers: [app_controller_1.AppController],
-            providers: []
+            providers: [administrator_service_1.AdministratorService]
         })
     ], AppModule);
     return AppModule;
