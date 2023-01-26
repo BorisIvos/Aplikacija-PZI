@@ -46,69 +46,58 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var common_1 = require("@nestjs/common");
-var typeorm_1 = require("@nestjs/typeorm");
-var administrator_entity_1 = require("entities/administrator.entity");
 var api_response_class_1 = require("src/misc/api.response.class");
-var AdministratorService = /** @class */ (function () {
-    function AdministratorService(administrator) {
-        this.administrator = administrator;
+var AdministratorController = /** @class */ (function () {
+    function AdministratorController(administratorService) {
+        this.administratorService = administratorService;
     }
-    //funkcija vraca niz administratora//
-    AdministratorService.prototype.getAll = function () {
-        return this.administrator.find();
+    AdministratorController.prototype.getAll = function () {
+        return this.administratorService.getAll();
     };
-    AdministratorService.prototype.getById = function (id) {
-        return this.administrator.findOne(id);
-    };
-    AdministratorService.prototype.add = function (data) {
+    AdministratorController.prototype.getById = function (administratorId) {
         var _this = this;
-        var crypto = require('crypto');
-        var passwordHash = crypto.createHash('sha512');
-        passwordHash.update(data.password);
-        var passwordHashString = passwordHash.digest('hex').toUpperCase();
-        var newAdmin = new administrator_entity_1.Administrator();
-        newAdmin.username = data.username;
-        newAdmin.passwordHash = passwordHashString;
-        return new Promise(function (resolve) {
-            _this.administrator.save(newAdmin)
-                .then(function (data) { return resolve(data); })["catch"](function (error) {
-                var response = new api_response_class_1.ApiResponse("error", -1001);
-                resolve(response);
-            });
-        });
-    };
-    AdministratorService.prototype.editById = function (id, data) {
-        return __awaiter(this, void 0, Promise, function () {
-            var admin, crypto, passwordHash, passwordHashString;
+        return new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
+            var admin;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.administrator.findOne(id)];
+                    case 0: return [4 /*yield*/, this.administratorService.getById(administratorId)];
                     case 1:
                         admin = _a.sent();
                         if (admin === undefined) {
-                            return [2 /*return*/, new Promise(function (reslove) {
-                                    reslove(new api_response_class_1.ApiResponse("error", -1002));
-                                })];
+                            resolve(new api_response_class_1.ApiResponse("error", -1002));
                         }
-                        crypto = require('crypto');
-                        passwordHash = crypto.createHash('sha512');
-                        passwordHash.update(data.password);
-                        passwordHashString = passwordHash.digest('hex').toUpperCase();
-                        admin.passwordHash = passwordHashString;
-                        return [2 /*return*/, this.administrator.save(admin)];
+                        resolve(admin);
+                        return [2 /*return*/];
                 }
             });
-        });
+        }); });
     };
-    AdministratorService = __decorate([
-        common_1.Injectable(),
-        __param(0, typeorm_1.InjectRepository(administrator_entity_1.Administrator))
-    ], AdministratorService);
-    return AdministratorService;
+    AdministratorController.prototype.add = function (data) {
+        return this.administratorService.add(data);
+    };
+    AdministratorController.prototype.edit = function (id, data) {
+        return this.administratorService.editById(id, data);
+    };
+    __decorate([
+        common_1.Get()
+    ], AdministratorController.prototype, "getAll");
+    __decorate([
+        common_1.Get(':id'),
+        __param(0, common_1.Param('id'))
+    ], AdministratorController.prototype, "getById");
+    __decorate([
+        common_1.Put(),
+        __param(0, common_1.Body())
+    ], AdministratorController.prototype, "add");
+    __decorate([
+        common_1.Post(':id'),
+        __param(0, common_1.Param('id')), __param(1, common_1.Body())
+    ], AdministratorController.prototype, "edit");
+    AdministratorController = __decorate([
+        common_1.Controller('api/administrator')
+    ], AdministratorController);
+    return AdministratorController;
 }());
-exports.AdministratorService = AdministratorService;
-function then(arg0) {
-    throw new Error("Function not implemented.");
-}
+exports.AdministratorController = AdministratorController;
 
-//# sourceMappingURL=administrator.service.js.map
+//# sourceMappingURL=administrator.controller.js.map
