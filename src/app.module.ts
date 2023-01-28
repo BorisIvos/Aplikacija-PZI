@@ -50,7 +50,9 @@ DatabaseConfiguration
     TypeOrmModule.forFeature([
        Administrator,
        Category,
-       Article
+       Article,
+       ArticlePrice,
+       ArticleFeature,
       ])
   ],
   controllers: [

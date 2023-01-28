@@ -57,7 +57,9 @@ var AppModule = /** @class */ (function () {
                 typeorm_1.TypeOrmModule.forFeature([
                     administrator_entity_1.Administrator,
                     category_entity_1.Category,
-                    article_entity_1.Article
+                    article_entity_1.Article,
+                    article_price_1.ArticlePrice,
+                    article_feuters_entity_1.ArticleFeature,
                 ])
             ],
             controllers: [
