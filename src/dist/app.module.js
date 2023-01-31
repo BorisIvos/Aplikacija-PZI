@@ -22,8 +22,10 @@ var photo_entity_1 = require("entities/photo.entity");
 var user_entity_1 = require("entities/user.entity");
 var administrator_controller_1 = require("./controllers/api/administrator.controller");
 var article_controller_1 = require("./controllers/api/article.controller");
+var auth_controller_1 = require("./controllers/api/auth.controller");
 var category_controller_1 = require("./controllers/api/category.controller");
 var app_controller_1 = require("./controllers/app.controller");
+var auth_middleware_1 = require("./middlewares/auth.middleware");
 var administrator_service_1 = require("./services/administrator/administrator.service");
 var category_service_1 = require("./services/administrator/category/category.service");
 var article_service_1 = require("./services/article/article.service");
@@ -31,6 +33,12 @@ database_configuration_1.DatabaseConfiguration;
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
+    AppModule.prototype.configure = function (consumer) {
+        consumer
+            .apply(auth_middleware_1.AuthMidleware)
+            .exclude('auth/*')
+            .forRoutes('api/*');
+    };
     AppModule = __decorate([
         common_1.Module({
             imports: [
@@ -67,11 +75,15 @@ var AppModule = /** @class */ (function () {
                 administrator_controller_1.AdministratorController,
                 category_controller_1.CategoryController,
                 article_controller_1.ArticleController,
+                auth_controller_1.AuthController,
             ],
             providers: [
                 administrator_service_1.AdministratorService,
                 category_service_1.CategoryService,
                 article_service_1.ArticleService,
+            ],
+            exports: [
+                administrator_service_1.AdministratorService,
             ]
         })
     ], AppModule);

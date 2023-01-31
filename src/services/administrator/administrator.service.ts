@@ -6,6 +6,7 @@ import { AddAdministratorDto } from "src/dtos/administrator/add.administrator.dt
 import { EditAdministratorDto } from "src/dtos/administrator/edit.administrator.dto";
 import { ApiResponse } from "src/misc/api.response.class";
 import { Repository } from "typeorm" ;
+import * as crypto from 'crypto';
 
 
 @Injectable()
@@ -21,6 +22,22 @@ export class AdministratorService{
         return this.administrator.find();
 
     }
+
+    async getByUsername(usernameString: string):Promise< Administrator | null> {
+        const admin = await this.administrator.findOne({
+            username: usernameString
+        });
+
+        if (admin){
+            return admin;
+        }
+
+        return null;
+
+    }
+
+
+
      getById(id: number ): Promise<Administrator>{
         return this.administrator.findOne(id);
 
@@ -51,23 +68,21 @@ export class AdministratorService{
 
     }
 
-    async editById(id : number, data: EditAdministratorDto): Promise<Administrator | ApiResponse>{
+    async editById(id: number, data: EditAdministratorDto): Promise<Administrator | ApiResponse> {
         let admin: Administrator = await this.administrator.findOne(id);
 
-        if(admin===undefined){
-            return new Promise((reslove) =>{
-                reslove(new ApiResponse("error",-1002));
-            })
+        if (admin === undefined) {
+            return new Promise((resolve) => {
+                resolve(new ApiResponse("error", -1002));
+            });
         }
 
-        const crypto = require('crypto');
         const passwordHash = crypto.createHash('sha512');
         passwordHash.update(data.password);
-
         const passwordHashString = passwordHash.digest('hex').toUpperCase();
 
-
         admin.passwordHash = passwordHashString;
+
         return this.administrator.save(admin);
     }
 

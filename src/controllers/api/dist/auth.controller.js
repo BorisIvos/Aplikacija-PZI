@@ -46,87 +46,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var common_1 = require("@nestjs/common");
-var typeorm_1 = require("@nestjs/typeorm");
-var administrator_entity_1 = require("entities/administrator.entity");
 var api_response_class_1 = require("src/misc/api.response.class");
 var crypto = require("crypto");
-var AdministratorService = /** @class */ (function () {
-    function AdministratorService(administrator) {
-        this.administrator = administrator;
+var login_info_administrator_dto_1 = require("src/dtos/administrator/login.info.administrator.dto");
+var jwt = require("jsonwebtoken");
+var jwt_data_administrator_dto_1 = require("src/dtos/administrator/jwt.data.administrator.dto");
+var jwt_secret_1 = require("config/jwt.secret");
+var AuthController = /** @class */ (function () {
+    function AuthController(administratorService) {
+        this.administratorService = administratorService;
     }
-    //funkcija vraca niz administratora//
-    AdministratorService.prototype.getAll = function () {
-        return this.administrator.find();
-    };
-    AdministratorService.prototype.getByUsername = function (usernameString) {
+    AuthController.prototype.doLogin = function (data, req) {
         return __awaiter(this, void 0, Promise, function () {
-            var admin;
+            var administrator, passwordHash, passwordHashString, jwtData, sada, istekTimestamp, token, responseObject;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.administrator.findOne({
-                            username: usernameString
-                        })];
+                    case 0: return [4 /*yield*/, this.administratorService.getByUsername(data.username)];
                     case 1:
-                        admin = _a.sent();
-                        if (admin) {
-                            return [2 /*return*/, admin];
-                        }
-                        return [2 /*return*/, null];
-                }
-            });
-        });
-    };
-    AdministratorService.prototype.getById = function (id) {
-        return this.administrator.findOne(id);
-    };
-    AdministratorService.prototype.add = function (data) {
-        var _this = this;
-        var crypto = require('crypto');
-        var passwordHash = crypto.createHash('sha512');
-        passwordHash.update(data.password);
-        var passwordHashString = passwordHash.digest('hex').toUpperCase();
-        var newAdmin = new administrator_entity_1.Administrator();
-        newAdmin.username = data.username;
-        newAdmin.passwordHash = passwordHashString;
-        return new Promise(function (resolve) {
-            _this.administrator.save(newAdmin)
-                .then(function (data) { return resolve(data); })["catch"](function (error) {
-                var response = new api_response_class_1.ApiResponse("error", -1001);
-                resolve(response);
-            });
-        });
-    };
-    AdministratorService.prototype.editById = function (id, data) {
-        return __awaiter(this, void 0, Promise, function () {
-            var admin, passwordHash, passwordHashString;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.administrator.findOne(id)];
-                    case 1:
-                        admin = _a.sent();
-                        if (admin === undefined) {
-                            return [2 /*return*/, new Promise(function (resolve) {
-                                    resolve(new api_response_class_1.ApiResponse("error", -1002));
-                                })];
+                        administrator = _a.sent();
+                        if (!administrator) {
+                            return [2 /*return*/, new Promise(function (resolve) { return resolve(new api_response_class_1.ApiResponse('error', -3001)); })];
                         }
                         passwordHash = crypto.createHash('sha512');
                         passwordHash.update(data.password);
                         passwordHashString = passwordHash.digest('hex').toUpperCase();
-                        admin.passwordHash = passwordHashString;
-                        return [2 /*return*/, this.administrator.save(admin)];
+                        if (administrator.passwordHash !== passwordHashString) {
+                            return [2 /*return*/, new Promise(function (resolve) { return resolve(new api_response_class_1.ApiResponse('error', -3002)); })];
+                        }
+                        jwtData = new jwt_data_administrator_dto_1.JwtDataAdministatorDto();
+                        jwtData.administratorId = administrator.administratorId;
+                        jwtData.username = administrator.username;
+                        sada = new Date();
+                        sada.setDate(sada.getDate() + 14);
+                        istekTimestamp = sada.getTime() / 1000;
+                        jwtData.ext = istekTimestamp;
+                        jwtData.ip = req.ip.toString();
+                        jwtData.ua = req.headers["user-agent"];
+                        token = jwt.sign(jwtData.toPlainObject(), jwt_secret_1.jwtSecret);
+                        responseObject = new login_info_administrator_dto_1.LoginInfoAdministratorDto(administrator.administratorId, administrator.username, token);
+                        return [2 /*return*/, new Promise(function (resolve) { return resolve(responseObject); })];
                 }
             });
         });
     };
-    AdministratorService = __decorate([
-        common_1.Injectable(),
-        __param(0, typeorm_1.InjectRepository(administrator_entity_1.Administrator))
-    ], AdministratorService);
-    return AdministratorService;
+    __decorate([
+        common_1.Post('login') //http://localhost:3000/auth/login/
+        ,
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], AuthController.prototype, "doLogin");
+    AuthController = __decorate([
+        common_1.Controller('auth')
+    ], AuthController);
+    return AuthController;
 }());
-exports.AdministratorService = AdministratorService;
-function then(arg0) {
-    throw new Error("Function not implemented.");
-}
+exports.AuthController = AuthController;
 
-//# sourceMappingURL=administrator.service.js.map
+//# sourceMappingURL=auth.controller.js.map
