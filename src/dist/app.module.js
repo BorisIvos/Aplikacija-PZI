@@ -29,6 +29,7 @@ var auth_middleware_1 = require("./middlewares/auth.middleware");
 var administrator_service_1 = require("./services/administrator/administrator.service");
 var category_service_1 = require("./services/administrator/category/category.service");
 var article_service_1 = require("./services/article/article.service");
+var photo_services_1 = require("./services/photo/photo.services");
 database_configuration_1.DatabaseConfiguration;
 var AppModule = /** @class */ (function () {
     function AppModule() {
@@ -64,10 +65,16 @@ var AppModule = /** @class */ (function () {
                 }),
                 typeorm_1.TypeOrmModule.forFeature([
                     administrator_entity_1.Administrator,
-                    category_entity_1.Category,
-                    article_entity_1.Article,
-                    article_price_1.ArticlePrice,
                     article_feuters_entity_1.ArticleFeature,
+                    article_price_1.ArticlePrice,
+                    article_entity_1.Article,
+                    cart_article_entity_1.CartArticle,
+                    cart_entity_1.Cart,
+                    category_entity_1.Category,
+                    features_entity_1.Feature,
+                    order_entity_1.Order,
+                    photo_entity_1.Photo,
+                    user_entity_1.User,
                 ])
             ],
             controllers: [
@@ -81,6 +88,7 @@ var AppModule = /** @class */ (function () {
                 administrator_service_1.AdministratorService,
                 category_service_1.CategoryService,
                 article_service_1.ArticleService,
+                photo_services_1.PhotoService,
             ],
             exports: [
                 administrator_service_1.AdministratorService,

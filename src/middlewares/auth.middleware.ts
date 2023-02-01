@@ -32,7 +32,9 @@ export class AuthMidleware implements NestMiddleware{
         
         const ip = req.ip.toString();
 
-         if(jwtData.ip !== req.ip.toString()){
+         if(jwtData.ip !== req.ip.toString(
+            
+         )){
            throw new HttpException('Bad token found3', HttpStatus.UNAUTHORIZED);
         }
         const administrator = await this.administratorService.getById(jwtData.administratorId)

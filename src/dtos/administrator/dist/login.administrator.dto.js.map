@@ -1,1 +1,0 @@
-{"version":3,"sources":["login.administrator.dto.ts"],"names":[],"mappings":";;AAAA;IAAA;IAKA,CAAC;IAAD,4BAAC;AAAD,CALA,AAKC,IAAA;AALY,sDAAqB","file":"login.administrator.dto.js","sourcesContent":["export class LoginAdministratorDto {\r\n    username: string;\r\n    password: string;\r\n\r\n\r\n}"]}
