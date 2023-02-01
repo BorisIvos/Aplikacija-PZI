@@ -1,5 +1,5 @@
 import { Controller } from "@nestjs/common";
-import { Category } from "entities/category.entity";
+import { Category } from "src/entities/category.entity";
 import { Crud } from "@nestjsx/crud";
 import { CategoryService } from "src/services/administrator/category/category.service";
 

@@ -79,7 +79,7 @@ var AuthController = /** @class */ (function () {
                         sada = new Date();
                         sada.setDate(sada.getDate() + 14);
                         istekTimestamp = sada.getTime() / 1000;
-                        jwtData.ext = istekTimestamp;
+                        jwtData.exp = istekTimestamp;
                         jwtData.ip = req.ip.toString();
                         jwtData.ua = req.headers["user-agent"];
                         token = jwt.sign(jwtData.toPlainObject(), jwt_secret_1.jwtSecret);

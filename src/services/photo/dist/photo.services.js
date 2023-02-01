@@ -25,7 +25,7 @@ exports.__esModule = true;
 var common_1 = require("@nestjs/common");
 var typeorm_1 = require("@nestjs/typeorm");
 var crud_typeorm_1 = require("@nestjsx/crud-typeorm");
-var photo_entity_1 = require("entities/photo.entity");
+var photo_entity_1 = require("src/entities/photo.entity");
 var PhotoService = /** @class */ (function (_super) {
     __extends(PhotoService, _super);
     function PhotoService(photo) {

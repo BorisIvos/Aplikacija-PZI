@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 var common_1 = require("@nestjs/common");
-var category_entity_1 = require("entities/category.entity");
+var category_entity_1 = require("src/entities/category.entity");
 var crud_1 = require("@nestjsx/crud");
 var CategoryController = /** @class */ (function () {
     function CategoryController(service) {

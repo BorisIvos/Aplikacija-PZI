@@ -48,10 +48,10 @@ exports.__esModule = true;
 var common_1 = require("@nestjs/common");
 var platform_express_1 = require("@nestjs/platform-express");
 var crud_1 = require("@nestjsx/crud");
-var article_entity_1 = require("entities/article.entity");
+var article_entity_1 = require("src/entities/article.entity");
 var multer_1 = require("multer");
 var storage_config_1 = require("config/storage.config");
-var photo_entity_1 = require("entities/photo.entity");
+var photo_entity_1 = require("src/entities/photo.entity");
 var api_response_class_1 = require("src/misc/api.response.class");
 var fileType = require("file-type");
 var fs = require("fs");
@@ -88,10 +88,10 @@ var ArticleController = /** @class */ (function () {
                             fs.unlinkSync(photo.path);
                             return [2 /*return*/, new api_response_class_1.ApiResponse('error', -4002, 'Bad file content type!')];
                         }
-                        return [4 /*yield*/, this.createThumb(photo)];
+                        return [4 /*yield*/, this.createResizedImage(photo, storage_config_1.StorageConfig.photo.resize.thumb)];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.createSmallImage(photo)];
+                        return [4 /*yield*/, this.createResizedImage(photo, storage_config_1.StorageConfig.photo.resize.small)];
                     case 3:
                         _a.sent();
                         newPhoto = new photo_entity_1.Photo();
@@ -108,7 +108,7 @@ var ArticleController = /** @class */ (function () {
             });
         });
     };
-    ArticleController.prototype.createThumb = function (photo) {
+    ArticleController.prototype.createResizedImage = function (photo, resizedSettings) {
         return __awaiter(this, void 0, void 0, function () {
             var originalFilePath, fileName, destinationFilePath;
             return __generator(this, function (_a) {
@@ -116,41 +116,14 @@ var ArticleController = /** @class */ (function () {
                     case 0:
                         originalFilePath = photo.path;
                         fileName = photo.filename;
-                        destinationFilePath = storage_config_1.StorageConfig.photoDestination + "thumb/" + fileName;
+                        destinationFilePath = storage_config_1.StorageConfig.photo.destination +
+                            resizedSettings.directory +
+                            fileName;
                         return [4 /*yield*/, sharp(originalFilePath)
                                 .resize({
                                 fit: 'cover',
-                                width: storage_config_1.StorageConfig.photoThumbSize.width,
-                                height: storage_config_1.StorageConfig.photoThumbSize.height,
-                                background: {
-                                    r: 255, g: 255, b: 255, alpha: 0.0
-                                }
-                            })
-                                .toFile(destinationFilePath)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    ArticleController.prototype.createSmallImage = function (photo) {
-        return __awaiter(this, void 0, void 0, function () {
-            var originalFilePath, fileName, destinationFilePath;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        originalFilePath = photo.path;
-                        fileName = photo.filename;
-                        destinationFilePath = storage_config_1.StorageConfig.photoDestination + "small/" + fileName;
-                        return [4 /*yield*/, sharp(originalFilePath)
-                                .resize({
-                                fit: 'contain',
-                                width: storage_config_1.StorageConfig.photoSmallSize.width,
-                                height: storage_config_1.StorageConfig.photoSmallSize.height,
-                                background: {
-                                    r: 255, g: 255, b: 255, alpha: 0.0
-                                }
+                                width: resizedSettings.photo.resize.width,
+                                height: resizedSettings.photo.resize.height
                             })
                                 .toFile(destinationFilePath)];
                     case 1:
@@ -170,7 +143,7 @@ var ArticleController = /** @class */ (function () {
         ,
         common_1.UseInterceptors(platform_express_1.FileInterceptor('photo', {
             storage: multer_1.diskStorage({
-                destination: storage_config_1.StorageConfig.photoDestination,
+                destination: storage_config_1.StorageConfig.photo.destination,
                 filename: function (req, file, callback) {
                     var original = file.originalname;
                     var normalized = original.replace(/\s+/g, '-');
@@ -206,7 +179,7 @@ var ArticleController = /** @class */ (function () {
             },
             limits: {
                 files: 1,
-                fileSize: storage_config_1.StorageConfig.photoMaxFileSize
+                fileSize: storage_config_1.StorageConfig.photo.maxSize
             }
         })),
         __param(0, common_1.Param('id')),

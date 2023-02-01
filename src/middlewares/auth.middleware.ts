@@ -23,7 +23,13 @@ export class AuthMidleware implements NestMiddleware{
             throw new HttpException('Bad token found1', HttpStatus.UNAUTHORIZED)
         }
         const tokenString = tokenParts[1];
-        const jwtData: JwtDataAdministatorDto = jwt.verify(tokenString, jwtSecret) as any ;
+        let jwtData: JwtDataAdministatorDto;
+        try{  
+        jwtData = jwt.verify(tokenString, jwtSecret) as any ;
+         } catch(e) {
+            throw new HttpException('Bad token found2', HttpStatus.UNAUTHORIZED)
+
+         }
 
         if(!jwtData){
             throw new HttpException('Bad token found2', HttpStatus.UNAUTHORIZED)
@@ -42,7 +48,7 @@ export class AuthMidleware implements NestMiddleware{
             throw new HttpException('Account not found', HttpStatus.UNAUTHORIZED);
         }
         const trenutniTimestamp = new Date().getTime() / 1000;
-        if (trenutniTimestamp >= jwtData.ext) {
+        if (trenutniTimestamp >= jwtData.exp) {
             throw new HttpException('the token has expired',HttpStatus.UNAUTHORIZED)
         }
 

@@ -65,7 +65,12 @@ var AuthMidleware = /** @class */ (function () {
                             throw new common_1.HttpException('Bad token found1', common_1.HttpStatus.UNAUTHORIZED);
                         }
                         tokenString = tokenParts[1];
-                        jwtData = jwt.verify(tokenString, jwt_secret_1.jwtSecret);
+                        try {
+                            jwtData = jwt.verify(tokenString, jwt_secret_1.jwtSecret);
+                        }
+                        catch (e) {
+                            throw new common_1.HttpException('Bad token found2', common_1.HttpStatus.UNAUTHORIZED);
+                        }
                         if (!jwtData) {
                             throw new common_1.HttpException('Bad token found2', common_1.HttpStatus.UNAUTHORIZED);
                         }
@@ -80,7 +85,7 @@ var AuthMidleware = /** @class */ (function () {
                             throw new common_1.HttpException('Account not found', common_1.HttpStatus.UNAUTHORIZED);
                         }
                         trenutniTimestamp = new Date().getTime() / 1000;
-                        if (trenutniTimestamp >= jwtData.ext) {
+                        if (trenutniTimestamp >= jwtData.exp) {
                             throw new common_1.HttpException('the token has expired', common_1.HttpStatus.UNAUTHORIZED);
                         }
                         next();
