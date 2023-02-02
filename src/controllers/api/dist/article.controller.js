@@ -64,6 +64,9 @@ var ArticleController = /** @class */ (function () {
     ArticleController.prototype.createFullArticle = function (data) {
         return this.service.createFullArticle(data);
     };
+    ArticleController.prototype.editFullArticle = function (id, data) {
+        return this.service.editFullArticle(id, data);
+    };
     ArticleController.prototype.uploadPhoto = function (articleId, photo, req) {
         return __awaiter(this, void 0, Promise, function () {
             var fileTypeResult, realMimeType, newPhoto, savedPhoto;
@@ -175,6 +178,11 @@ var ArticleController = /** @class */ (function () {
         __param(0, common_1.Body())
     ], ArticleController.prototype, "createFullArticle");
     __decorate([
+        common_1.Patch(':id') //PATCH http://localhost:3000/api/article/2/
+        ,
+        __param(0, common_1.Param('id')), __param(1, common_1.Body())
+    ], ArticleController.prototype, "editFullArticle");
+    __decorate([
         common_1.Post(':id/uploadPhoto/') // POST http://localhost:3000/api/article/:id/uploadPhoto
         ,
         common_1.UseInterceptors(platform_express_1.FileInterceptor('photo', {
@@ -258,6 +266,9 @@ var ArticleController = /** @class */ (function () {
                         eager: true
                     }
                 }
+            },
+            routes: {
+                exclude: ['updateOneBase', 'replaceOneBase', 'deleteOneBase']
             }
         })
     ], ArticleController);

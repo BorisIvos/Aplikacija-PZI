@@ -7,7 +7,7 @@ import { FeatureService } from "src/services/feature/feature.service";
 @Controller('api/feature')
 @Crud({
     model: {
-        type: Feature  
+        type: Feature
     },
     params: {
         id: {
@@ -28,10 +28,9 @@ import { FeatureService } from "src/services/feature/feature.service";
                 eager: false
             }
         }
-    },
-    })
-export class FeatureController {
+    }
+ } )
+ export class FeatureController {
     constructor(public service: FeatureService) { }
-}
-
+ }
 
