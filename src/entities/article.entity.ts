@@ -14,7 +14,7 @@ import { ArticleFeature } from "./article-feuters.entity";
 import { ArticlePrice } from "./article-price";
 import { CartArticle } from "./cart-article.entity";
 import { Photo } from "./photo.entity";
-import { Feature } from "./features.entity";
+import { Feature } from "./feature.entity";
 import * as Validator from 'class-validator';
 
 @Index("fk_article_category_id", ["categoryId"], {})

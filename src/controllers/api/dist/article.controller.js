@@ -133,6 +133,42 @@ var ArticleController = /** @class */ (function () {
             });
         });
     };
+    // http://localhost:3000/api/article/1/deltePhoto/45/
+    ArticleController.prototype.deltePhoto = function (articleId, photoId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var photo, deleteResult;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.photoService.findOne({
+                            articleId: articleId,
+                            photoId: photoId
+                        })];
+                    case 1:
+                        photo = _a.sent();
+                        if (!photo) {
+                            return [2 /*return*/, new api_response_class_1.ApiResponse('error', -4004, 'Photo not found')];
+                        }
+                        try {
+                            fs.unlinkSync(storage_config_1.StorageConfig.photo.destination + photo.imagePath);
+                            fs.unlinkSync(storage_config_1.StorageConfig.photo.destination +
+                                storage_config_1.StorageConfig.photo.resize.thumb.directory +
+                                photo.imagePath);
+                            fs.unlinkSync(storage_config_1.StorageConfig.photo.destination +
+                                storage_config_1.StorageConfig.photo.resize.small.directory +
+                                photo.imagePath);
+                        }
+                        catch (e) { }
+                        return [4 /*yield*/, this.photoService.deleteById(photoId)];
+                    case 2:
+                        deleteResult = _a.sent();
+                        if (deleteResult.affected === 0) {
+                            return [2 /*return*/, new api_response_class_1.ApiResponse('error', -4004, 'Photo not found!')];
+                        }
+                        return [2 /*return*/, new api_response_class_1.ApiResponse('ok', 0, 'One photo deleted!')];
+                }
+            });
+        });
+    };
     __decorate([
         common_1.Post('createFull') //Post http://localhost:3000/api/article/createFull/
         ,
@@ -186,6 +222,11 @@ var ArticleController = /** @class */ (function () {
         __param(1, common_1.UploadedFile()),
         __param(2, common_1.Req())
     ], ArticleController.prototype, "uploadPhoto");
+    __decorate([
+        common_1.Delete(':articleId/deltePhoto/:photoId'),
+        __param(0, common_1.Param('articleId')),
+        __param(1, common_1.Param('photoId'))
+    ], ArticleController.prototype, "deltePhoto");
     ArticleController = __decorate([
         common_1.Controller('api/article'),
         crud_1.Crud({
@@ -194,7 +235,7 @@ var ArticleController = /** @class */ (function () {
             },
             params: {
                 id: {
-                    field: 'articleId',
+                    field: 'article_Id',
                     type: 'number',
                     primary: true
                 }
@@ -223,5 +264,8 @@ var ArticleController = /** @class */ (function () {
     return ArticleController;
 }());
 exports.ArticleController = ArticleController;
+function deleteById(id, number) {
+    throw new Error("Function not implemented.");
+}
 
 //# sourceMappingURL=article.controller.js.map

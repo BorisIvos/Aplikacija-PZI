@@ -12,7 +12,7 @@ var article_feuters_entity_1 = require("./article-feuters.entity");
 var article_price_1 = require("./article-price");
 var cart_article_entity_1 = require("./cart-article.entity");
 var photo_entity_1 = require("./photo.entity");
-var features_entity_1 = require("./features.entity");
+var feature_entity_1 = require("./feature.entity");
 var Validator = require("class-validator");
 var Article = /** @class */ (function () {
     function Article() {
@@ -75,7 +75,7 @@ var Article = /** @class */ (function () {
         typeorm_1.OneToMany(function () { return article_feuters_entity_1.ArticleFeature; }, function (articleFeature) { return articleFeature.article; })
     ], Article.prototype, "articleFeatures");
     __decorate([
-        typeorm_1.ManyToMany(function (type) { return features_entity_1.Feature; }, function (feature) { return feature.articles; }),
+        typeorm_1.ManyToMany(function (type) { return feature_entity_1.Feature; }, function (feature) { return feature.articles; }),
         typeorm_1.JoinTable({
             name: "article_feature",
             joinColumn: { name: "article_id", referencedColumnName: "articleId" },

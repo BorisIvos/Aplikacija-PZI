@@ -16,7 +16,7 @@ var article_entity_1 = require("src/entities/article.entity");
 var cart_article_entity_1 = require("src/entities/cart-article.entity");
 var cart_entity_1 = require("src/entities/cart.entity");
 var category_entity_1 = require("src/entities/category.entity");
-var features_entity_1 = require("src/entities/features.entity");
+var feature_entity_1 = require("src/entities/feature.entity");
 var order_entity_1 = require("src/entities/order.entity");
 var photo_entity_1 = require("src/entities/photo.entity");
 var user_entity_1 = require("src/entities/user.entity");
@@ -24,11 +24,13 @@ var administrator_controller_1 = require("./controllers/api/administrator.contro
 var article_controller_1 = require("./controllers/api/article.controller");
 var auth_controller_1 = require("./controllers/api/auth.controller");
 var category_controller_1 = require("./controllers/api/category.controller");
+var feature_controller_1 = require("./controllers/api/feature.controller");
 var app_controller_1 = require("./controllers/app.controller");
 var auth_middleware_1 = require("./middlewares/auth.middleware");
 var administrator_service_1 = require("./services/administrator/administrator.service");
 var category_service_1 = require("./services/administrator/category/category.service");
 var article_service_1 = require("./services/article/article.service");
+var feature_service_1 = require("./services/feature/feature.service");
 var photo_services_1 = require("./services/photo/photo.services");
 database_configuration_1.DatabaseConfiguration;
 var AppModule = /** @class */ (function () {
@@ -57,7 +59,7 @@ var AppModule = /** @class */ (function () {
                         cart_article_entity_1.CartArticle,
                         cart_entity_1.Cart,
                         category_entity_1.Category,
-                        features_entity_1.Feature,
+                        feature_entity_1.Feature,
                         order_entity_1.Order,
                         photo_entity_1.Photo,
                         user_entity_1.User,
@@ -71,7 +73,7 @@ var AppModule = /** @class */ (function () {
                     cart_article_entity_1.CartArticle,
                     cart_entity_1.Cart,
                     category_entity_1.Category,
-                    features_entity_1.Feature,
+                    feature_entity_1.Feature,
                     order_entity_1.Order,
                     photo_entity_1.Photo,
                     user_entity_1.User,
@@ -83,12 +85,14 @@ var AppModule = /** @class */ (function () {
                 category_controller_1.CategoryController,
                 article_controller_1.ArticleController,
                 auth_controller_1.AuthController,
+                feature_controller_1.FeatureController,
             ],
             providers: [
                 administrator_service_1.AdministratorService,
                 category_service_1.CategoryService,
                 article_service_1.ArticleService,
                 photo_services_1.PhotoService,
+                feature_service_1.FeatureService,
             ],
             exports: [
                 administrator_service_1.AdministratorService,

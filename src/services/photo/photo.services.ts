@@ -6,6 +6,9 @@ import { Repository } from "typeorm";
 
 @Injectable()
 export class PhotoService extends TypeOrmCrudService<Photo> {
+    delet(id: any) {
+        throw new Error("Method not implemented.");
+    }
     constructor(
         @InjectRepository(Photo)
         private readonly photo: Repository<Photo>){
@@ -15,5 +18,9 @@ export class PhotoService extends TypeOrmCrudService<Photo> {
 
     add(newPhoto: Photo): Promise<Photo> {
         return this.photo.save(newPhoto)
+    }
+
+    async deleteById(id: number) {
+        return await this.photo.delete(id);
     }
 }
