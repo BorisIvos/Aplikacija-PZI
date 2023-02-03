@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -46,75 +59,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var common_1 = require("@nestjs/common");
+var typeorm_1 = require("@nestjs/typeorm");
+var crud_typeorm_1 = require("@nestjsx/crud-typeorm");
+var user_entity_1 = require("src/entities/user.entity");
 var api_response_class_1 = require("src/misc/api.response.class");
 var crypto = require("crypto");
-var login_info_administrator_dto_1 = require("src/dtos/administrator/login.info.administrator.dto");
-var jwt = require("jsonwebtoken");
-var jwt_data_administrator_dto_1 = require("src/dtos/administrator/jwt.data.administrator.dto");
-var jwt_secret_1 = require("config/jwt.secret");
-var AuthController = /** @class */ (function () {
-    function AuthController(administratorService, userService) {
-        this.administratorService = administratorService;
-        this.userService = userService;
+var UserService = /** @class */ (function (_super) {
+    __extends(UserService, _super);
+    function UserService(user //// Cim se spomene neki repozitori mora se evidentirati u osnovno modulu
+    ) {
+        var _this = _super.call(this, user) || this;
+        _this.user = user;
+        return _this;
     }
-    AuthController.prototype.doLogin = function (data, req) {
+    UserService.prototype.register = function (data) {
         return __awaiter(this, void 0, Promise, function () {
-            var administrator, passwordHash, passwordHashString, jwtData, sada, istekTimestamp, token, responseObject;
+            var passwordHash, passwordHashString, newUser, savedUser, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.administratorService.getByUsername(data.username)];
-                    case 1:
-                        administrator = _a.sent();
-                        if (!administrator) {
-                            return [2 /*return*/, new Promise(function (resolve) { return resolve(new api_response_class_1.ApiResponse('error', -3001)); })];
-                        }
+                    case 0:
                         passwordHash = crypto.createHash('sha512');
                         passwordHash.update(data.password);
                         passwordHashString = passwordHash.digest('hex').toUpperCase();
-                        if (administrator.passwordHash !== passwordHashString) {
-                            return [2 /*return*/, new Promise(function (resolve) { return resolve(new api_response_class_1.ApiResponse('error', -3002)); })];
+                        newUser = new user_entity_1.User();
+                        newUser.email = data.email;
+                        newUser.passwordHash = passwordHashString;
+                        newUser.forename = data.forename;
+                        newUser.surename = data.surename;
+                        newUser.phoneNumber = data.phoneNumber;
+                        newUser.postalAddress = data.postalAddress;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.user.save(newUser)];
+                    case 2:
+                        savedUser = _a.sent();
+                        if (!savedUser) {
+                            throw new Error('');
                         }
-                        jwtData = new jwt_data_administrator_dto_1.JwtDataAdministatorDto();
-                        jwtData.administratorId = administrator.administratorId;
-                        jwtData.username = administrator.username;
-                        sada = new Date();
-                        sada.setDate(sada.getDate() + 14);
-                        istekTimestamp = sada.getTime() / 1000;
-                        jwtData.exp = istekTimestamp;
-                        jwtData.ip = req.ip.toString();
-                        jwtData.ua = req.headers["user-agent"];
-                        token = jwt.sign(jwtData.toPlainObject(), jwt_secret_1.jwtSecret);
-                        responseObject = new login_info_administrator_dto_1.LoginInfoAdministratorDto(administrator.administratorId, administrator.username, token);
-                        return [2 /*return*/, new Promise(function (resolve) { return resolve(responseObject); })];
+                        return [2 /*return*/, savedUser];
+                    case 3:
+                        e_1 = _a.sent();
+                        return [2 /*return*/, new api_response_class_1.ApiResponse('error', -6001, 'This user account cannot be created.')];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    AuthController.prototype.userRegister = function (data) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.userService.register(data)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    __decorate([
-        common_1.Post('login') //http://localhost:3000/auth/login/
-        ,
-        __param(0, common_1.Body()), __param(1, common_1.Req())
-    ], AuthController.prototype, "doLogin");
-    __decorate([
-        common_1.Put('user/register') // PUT http://localhost:3000/auth/user/register/
-        ,
-        __param(0, common_1.Body())
-    ], AuthController.prototype, "userRegister");
-    AuthController = __decorate([
-        common_1.Controller('auth')
-    ], AuthController);
-    return AuthController;
-}());
-exports.AuthController = AuthController;
+    UserService = __decorate([
+        common_1.Injectable(),
+        __param(0, typeorm_1.InjectRepository(user_entity_1.User))
+    ], UserService);
+    return UserService;
+}(crud_typeorm_1.TypeOrmCrudService));
+exports.UserService = UserService;
 
-//# sourceMappingURL=auth.controller.js.map
+//# sourceMappingURL=user.service.js.map

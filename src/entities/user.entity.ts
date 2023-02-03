@@ -29,10 +29,10 @@ export class User {
   passwordHash: string;
 
   @Column({type:"varchar", length: 64 })
-  forname: string;
+  forename: string;
 
   @Column({type:"varchar", length: 64})
-  surename: string;
+  surname: string;
 
 
 
@@ -49,4 +49,5 @@ export class User {
 
   @OneToMany(() => Cart, (cart) => cart.user)
   carts: Cart[];
+    surename: string;
 }

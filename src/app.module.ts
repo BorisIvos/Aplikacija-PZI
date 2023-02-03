@@ -24,6 +24,7 @@ import { CategoryService } from './services/administrator/category/category.serv
 import { ArticleService } from './services/article/article.service';
 import { FeatureService } from './services/feature/feature.service';
 import { PhotoService } from './services/photo/photo.services';
+import { UserService } from './services/user/user.service';
 
 
 DatabaseConfiguration
@@ -74,6 +75,7 @@ DatabaseConfiguration
     ArticleController,
     AuthController,
     FeatureController,
+
   
   
   ],
@@ -83,6 +85,7 @@ DatabaseConfiguration
     ArticleService,
     PhotoService,
     FeatureService,
+    UserService,
 
   ],
   exports:[

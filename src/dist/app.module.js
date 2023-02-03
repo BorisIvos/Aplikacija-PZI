@@ -32,6 +32,7 @@ var category_service_1 = require("./services/administrator/category/category.ser
 var article_service_1 = require("./services/article/article.service");
 var feature_service_1 = require("./services/feature/feature.service");
 var photo_services_1 = require("./services/photo/photo.services");
+var user_service_1 = require("./services/user/user.service");
 database_configuration_1.DatabaseConfiguration;
 var AppModule = /** @class */ (function () {
     function AppModule() {
@@ -93,6 +94,7 @@ var AppModule = /** @class */ (function () {
                 article_service_1.ArticleService,
                 photo_services_1.PhotoService,
                 feature_service_1.FeatureService,
+                user_service_1.UserService,
             ],
             exports: [
                 administrator_service_1.AdministratorService,
