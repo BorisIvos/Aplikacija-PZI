@@ -48,16 +48,16 @@ exports.__esModule = true;
 var common_1 = require("@nestjs/common");
 var api_response_class_1 = require("src/misc/api.response.class");
 var crypto = require("crypto");
-var login_info_administrator_dto_1 = require("src/dtos/administrator/login.info.administrator.dto");
 var jwt = require("jsonwebtoken");
-var jwt_data_administrator_dto_1 = require("src/dtos/administrator/jwt.data.administrator.dto");
 var jwt_secret_1 = require("config/jwt.secret");
+var jwt_data_dto_1 = require("src/dtos/administrator/auth/jwt.data.dto");
+var login_info_dto_1 = require("src/dtos/administrator/auth/login.info.dto");
 var AuthController = /** @class */ (function () {
     function AuthController(administratorService, userService) {
         this.administratorService = administratorService;
         this.userService = userService;
     }
-    AuthController.prototype.doLogin = function (data, req) {
+    AuthController.prototype.doAdministratorLogin = function (data, req) {
         return __awaiter(this, void 0, Promise, function () {
             var administrator, passwordHash, passwordHashString, jwtData, sada, istekTimestamp, token, responseObject;
             return __generator(this, function (_a) {
@@ -74,9 +74,10 @@ var AuthController = /** @class */ (function () {
                         if (administrator.passwordHash !== passwordHashString) {
                             return [2 /*return*/, new Promise(function (resolve) { return resolve(new api_response_class_1.ApiResponse('error', -3002)); })];
                         }
-                        jwtData = new jwt_data_administrator_dto_1.JwtDataAdministatorDto();
-                        jwtData.administratorId = administrator.administratorId;
-                        jwtData.username = administrator.username;
+                        jwtData = new jwt_data_dto_1.JwtDataDto();
+                        jwtData.role = "administrator";
+                        jwtData.id = administrator.administratorId;
+                        jwtData.identity = administrator.username;
                         sada = new Date();
                         sada.setDate(sada.getDate() + 14);
                         istekTimestamp = sada.getTime() / 1000;
@@ -84,7 +85,7 @@ var AuthController = /** @class */ (function () {
                         jwtData.ip = req.ip.toString();
                         jwtData.ua = req.headers["user-agent"];
                         token = jwt.sign(jwtData.toPlainObject(), jwt_secret_1.jwtSecret);
-                        responseObject = new login_info_administrator_dto_1.LoginInfoAdministratorDto(administrator.administratorId, administrator.username, token);
+                        responseObject = new login_info_dto_1.LoginInfoDto(administrator.administratorId, administrator.username, token);
                         return [2 /*return*/, new Promise(function (resolve) { return resolve(responseObject); })];
                 }
             });
@@ -100,16 +101,55 @@ var AuthController = /** @class */ (function () {
             });
         });
     };
+    AuthController.prototype.doUserLogin = function (data, req) {
+        return __awaiter(this, void 0, Promise, function () {
+            var user, passwordHash, passwordHashString, jwtData, sada, istekTimestamp, token, responseObject;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.userService.getByEmail(data.email)];
+                    case 1:
+                        user = _a.sent();
+                        if (!user) {
+                            return [2 /*return*/, new Promise(function (resolve) { return resolve(new api_response_class_1.ApiResponse('error', -3001)); })];
+                        }
+                        passwordHash = crypto.createHash('sha512');
+                        passwordHash.update(data.password);
+                        passwordHashString = passwordHash.digest('hex').toUpperCase();
+                        if (user.passwordHash !== passwordHashString) {
+                            return [2 /*return*/, new Promise(function (resolve) { return resolve(new api_response_class_1.ApiResponse('error', -3002)); })];
+                        }
+                        jwtData = new jwt_data_dto_1.JwtDataDto();
+                        jwtData.role = "user";
+                        jwtData.id = user.userId;
+                        jwtData.identity = user.email;
+                        sada = new Date();
+                        sada.setDate(sada.getDate() + 14);
+                        istekTimestamp = sada.getTime() / 1000;
+                        jwtData.exp = istekTimestamp;
+                        jwtData.ip = req.ip.toString();
+                        jwtData.ua = req.headers["user-agent"];
+                        token = jwt.sign(jwtData.toPlainObject(), jwt_secret_1.jwtSecret);
+                        responseObject = new login_info_dto_1.LoginInfoDto(user.userId, user.email, token);
+                        return [2 /*return*/, new Promise(function (resolve) { return resolve(responseObject); })];
+                }
+            });
+        });
+    };
     __decorate([
-        common_1.Post('login') //http://localhost:3000/auth/login/
+        common_1.Post('administrator/login') //http://localhost:3000/auth/login/
         ,
         __param(0, common_1.Body()), __param(1, common_1.Req())
-    ], AuthController.prototype, "doLogin");
+    ], AuthController.prototype, "doAdministratorLogin");
     __decorate([
         common_1.Put('user/register') // PUT http://localhost:3000/auth/user/register/
         ,
         __param(0, common_1.Body())
     ], AuthController.prototype, "userRegister");
+    __decorate([
+        common_1.Post('administrator/login') //http://localhost:3000/auth/login/
+        ,
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], AuthController.prototype, "doUserLogin");
     AuthController = __decorate([
         common_1.Controller('auth')
     ], AuthController);

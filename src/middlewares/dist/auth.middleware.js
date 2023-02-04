@@ -47,12 +47,13 @@ var jwt = require("jsonwebtoken");
 var jwt_secret_1 = require("config/jwt.secret");
 var decorators_1 = require("@nestjs/common/decorators");
 var AuthMidleware = /** @class */ (function () {
-    function AuthMidleware(administratorService) {
+    function AuthMidleware(administratorService, userService) {
         this.administratorService = administratorService;
+        this.userService = userService;
     }
     AuthMidleware.prototype.use = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var token, tokenParts, tokenString, jwtData, ip, administrator, trenutniTimestamp;
+            var token, tokenParts, tokenString, jwtData, ip, administrator, user, trenutniTimestamp;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -78,12 +79,24 @@ var AuthMidleware = /** @class */ (function () {
                         if (jwtData.ip !== req.ip.toString()) {
                             throw new common_1.HttpException('Bad token found3', common_1.HttpStatus.UNAUTHORIZED);
                         }
-                        return [4 /*yield*/, this.administratorService.getById(jwtData.administratorId)];
+                        if (!(jwtData.role === "administrator")) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.administratorService.getById(jwtData.id)];
                     case 1:
                         administrator = _a.sent();
                         if (!administrator) {
                             throw new common_1.HttpException('Account not found', common_1.HttpStatus.UNAUTHORIZED);
                         }
+                        return [3 /*break*/, 4];
+                    case 2:
+                        if (!(jwtData.role === "user")) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.userService.getById(jwtData.id)];
+                    case 3:
+                        user = _a.sent();
+                        if (!user) {
+                            throw new common_1.HttpException('Account not found', common_1.HttpStatus.UNAUTHORIZED);
+                        }
+                        _a.label = 4;
+                    case 4:
                         trenutniTimestamp = new Date().getTime() / 1000;
                         if (trenutniTimestamp >= jwtData.exp) {
                             throw new common_1.HttpException('the token has expired', common_1.HttpStatus.UNAUTHORIZED);

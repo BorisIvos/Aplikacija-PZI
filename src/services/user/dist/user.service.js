@@ -106,6 +106,34 @@ var UserService = /** @class */ (function (_super) {
             });
         });
     };
+    UserService.prototype.getById = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.user.findOne(id)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    UserService.prototype.getByEmail = function (email) {
+        return __awaiter(this, void 0, Promise, function () {
+            var user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.user.findOne({
+                            email: email
+                        })];
+                    case 1:
+                        user = _a.sent();
+                        if (user) {
+                            return [2 /*return*/, user];
+                        }
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
     UserService = __decorate([
         common_1.Injectable(),
         __param(0, typeorm_1.InjectRepository(user_entity_1.User))

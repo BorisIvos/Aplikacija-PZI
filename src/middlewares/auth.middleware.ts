@@ -3,12 +3,18 @@ import { NextFunction, Request, Response } from "express";
 import { AdministratorService } from "src/services/administrator/administrator.service";
 import * as jwt from 'jsonwebtoken';
 import { jwtSecret } from "config/jwt.secret";
-import { JwtDataAdministatorDto } from "src/dtos/administrator/jwt.data.administrator.dto";
 import { Injectable } from "@nestjs/common/decorators";
+import { JwtDataDto } from "src/dtos/administrator/auth/jwt.data.dto";
+import { UserService } from "src/services/user/user.service";
 
 @Injectable()
 export class AuthMidleware implements NestMiddleware{
-    constructor(private readonly administratorService: AdministratorService){}
+    constructor(
+        public readonly administratorService: AdministratorService,
+        public userService: UserService,
+
+        
+        ){}
     async use(req: Request, res: Response, next: NextFunction) {
         
         if (!req.headers.authorization){
@@ -23,7 +29,7 @@ export class AuthMidleware implements NestMiddleware{
             throw new HttpException('Bad token found1', HttpStatus.UNAUTHORIZED)
         }
         const tokenString = tokenParts[1];
-        let jwtData: JwtDataAdministatorDto;
+        let jwtData: JwtDataDto;
         try{  
         jwtData = jwt.verify(tokenString, jwtSecret) as any ;
          } catch(e) {
@@ -43,9 +49,18 @@ export class AuthMidleware implements NestMiddleware{
          )){
            throw new HttpException('Bad token found3', HttpStatus.UNAUTHORIZED);
         }
-        const administrator = await this.administratorService.getById(jwtData.administratorId)
-        if(!administrator){
-            throw new HttpException('Account not found', HttpStatus.UNAUTHORIZED);
+
+        if(jwtData.role === "administrator") {  
+            const administrator = await this.administratorService.getById(jwtData.id)
+            if(!administrator){
+                throw new HttpException('Account not found', HttpStatus.UNAUTHORIZED);
+        }
+        } else if (jwtData.role === "user") {
+            const user = await this.userService.getById(jwtData.id)
+            if(!user){
+                throw new HttpException('Account not found', HttpStatus.UNAUTHORIZED);
+            }
+            
         }
         const trenutniTimestamp = new Date().getTime() / 1000;
         if (trenutniTimestamp >= jwtData.exp) {
