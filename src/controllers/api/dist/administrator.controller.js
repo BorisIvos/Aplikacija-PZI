@@ -47,6 +47,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var common_1 = require("@nestjs/common");
 var api_response_class_1 = require("src/misc/api.response.class");
+var allow_to_roles_descriptor_1 = require("src/misc/allow.to.roles.descriptor");
+var role_checker_guard_1 = require("src/misc/role.checker.guard");
 var AdministratorController = /** @class */ (function () {
     function AdministratorController(administratorService) {
         this.administratorService = administratorService;
@@ -79,18 +81,27 @@ var AdministratorController = /** @class */ (function () {
         return this.administratorService.editById(id, data);
     };
     __decorate([
-        common_1.Get()
+        common_1.Get(),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.SetMetadata('allow_to_roles', ['administrator', 'user']),
+        allow_to_roles_descriptor_1.AllowToRoles('administrator')
     ], AdministratorController.prototype, "getAll");
     __decorate([
         common_1.Get(':id'),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Param('id'))
     ], AdministratorController.prototype, "getById");
     __decorate([
         common_1.Put(),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Body())
     ], AdministratorController.prototype, "add");
     __decorate([
         common_1.Post(':id'),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Param('id')), __param(1, common_1.Body())
     ], AdministratorController.prototype, "edit");
     AdministratorController = __decorate([

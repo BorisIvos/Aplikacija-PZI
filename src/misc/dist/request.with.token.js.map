@@ -1,0 +1,1 @@
+{"version":3,"sources":["request.with.token.ts"],"names":[],"mappings":"","file":"request.with.token.js","sourcesContent":["import { JwtDataDto } from \"src/dtos/jwt.data.dto\";\r\n\r\ndeclare module 'express'{\r\n    interface Request{\r\n        token: JwtDataDto;\r\n    }\r\n}"]}

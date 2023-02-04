@@ -101,6 +101,7 @@ var AuthMidleware = /** @class */ (function () {
                         if (trenutniTimestamp >= jwtData.exp) {
                             throw new common_1.HttpException('the token has expired', common_1.HttpStatus.UNAUTHORIZED);
                         }
+                        req.token = jwtData;
                         next();
                         return [2 /*return*/];
                 }

@@ -56,6 +56,8 @@ var api_response_class_1 = require("src/misc/api.response.class");
 var fileType = require("file-type");
 var fs = require("fs");
 var sharp = require("sharp");
+var allow_to_roles_descriptor_1 = require("src/misc/allow.to.roles.descriptor");
+var role_checker_guard_1 = require("src/misc/role.checker.guard");
 var ArticleController = /** @class */ (function () {
     function ArticleController(service, photoService) {
         this.service = service;
@@ -175,16 +177,22 @@ var ArticleController = /** @class */ (function () {
     __decorate([
         common_1.Post('createFull') //Post http://localhost:3000/api/article/createFull/
         ,
+        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Body())
     ], ArticleController.prototype, "createFullArticle");
     __decorate([
         common_1.Patch(':id') //PATCH http://localhost:3000/api/article/2/
         ,
+        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Param('id')), __param(1, common_1.Body())
     ], ArticleController.prototype, "editFullArticle");
     __decorate([
         common_1.Post(':id/uploadPhoto/') // POST http://localhost:3000/api/article/:id/uploadPhoto
         ,
+        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         common_1.UseInterceptors(platform_express_1.FileInterceptor('photo', {
             storage: multer_1.diskStorage({
                 destination: storage_config_1.StorageConfig.photo.destination,
@@ -232,6 +240,8 @@ var ArticleController = /** @class */ (function () {
     ], ArticleController.prototype, "uploadPhoto");
     __decorate([
         common_1.Delete(':articleId/deltePhoto/:photoId'),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Param('articleId')),
         __param(1, common_1.Param('photoId'))
     ], ArticleController.prototype, "deltePhoto");

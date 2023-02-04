@@ -66,7 +66,7 @@ export class AuthMidleware implements NestMiddleware{
         if (trenutniTimestamp >= jwtData.exp) {
             throw new HttpException('the token has expired',HttpStatus.UNAUTHORIZED)
         }
-
+        req.token= jwtData;
 
         next();
     }
