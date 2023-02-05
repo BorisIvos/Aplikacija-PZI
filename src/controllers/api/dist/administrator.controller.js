@@ -93,13 +93,13 @@ var AdministratorController = /** @class */ (function () {
         __param(0, common_1.Param('id'))
     ], AdministratorController.prototype, "getById");
     __decorate([
-        common_1.Put(),
+        common_1.Post(),
         common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Body())
     ], AdministratorController.prototype, "add");
     __decorate([
-        common_1.Post(':id'),
+        common_1.Patch(':id'),
         common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Param('id')), __param(1, common_1.Body())

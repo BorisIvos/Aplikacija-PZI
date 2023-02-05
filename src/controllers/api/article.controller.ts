@@ -55,7 +55,16 @@ import { RoleCheckGuard } from "src/misc/role.checker.guard";
      },
 
      routes: {
-        exclude: ['updateOneBase', 'replaceOneBase', 'deleteOneBase'],
+        only: [
+            'getOneBase',
+            'getManyBase',
+        ],
+        getOneBase: {
+            decorators: [
+                UseGuards(RoleCheckGuard),
+                AllowToRoles('administrator', 'user')
+            ],
+        },
      },
 
 
@@ -68,7 +77,7 @@ export class ArticleController {
                                 
         ) { }
     
-    @Post('createFull')  //Post http://localhost:3000/api/article/createFull/
+    @Post()  //Post http://localhost:3000/api/article/createFull/
     @UseGuards(RoleCheckGuard)
     @AllowToRoles('administrator')
     createFullArticle(@Body() data: AddArticleDto){

@@ -175,7 +175,7 @@ var ArticleController = /** @class */ (function () {
         });
     };
     __decorate([
-        common_1.Post('createFull') //Post http://localhost:3000/api/article/createFull/
+        common_1.Post() //Post http://localhost:3000/api/article/createFull/
         ,
         common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
@@ -278,7 +278,16 @@ var ArticleController = /** @class */ (function () {
                 }
             },
             routes: {
-                exclude: ['updateOneBase', 'replaceOneBase', 'deleteOneBase']
+                only: [
+                    'getOneBase',
+                    'getManyBase',
+                ],
+                getOneBase: {
+                    decorators: [
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        allow_to_roles_descriptor_1.AllowToRoles('administrator', 'user')
+                    ]
+                }
             }
         })
     ], ArticleController);

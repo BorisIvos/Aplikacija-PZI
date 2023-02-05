@@ -73,7 +73,7 @@ export class AuthController{
 
     }
 
-    @Put('user/register') // PUT http://localhost:3000/auth/user/register/
+    @Post('user/register') // PUT http://localhost:3000/auth/user/register/
     async userRegister(@Body() data: UserRegistrationDto) {
         return await this.userService.register(data);
 

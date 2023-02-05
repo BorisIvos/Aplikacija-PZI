@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, SetMetadata, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Put, SetMetadata, UseGuards } from "@nestjs/common";
 import { Administrator } from "src/entities/Administrator";
 import { get } from "http";
 import { resolve } from "path";
@@ -40,7 +40,7 @@ export class AdministratorController {
             resolve(admin);
         });
     }
-    @Put()
+    @Post()
     @UseGuards(RoleCheckGuard)
     @AllowToRoles('administrator')
     add(@Body() data:AddAdministratorDto): Promise<Administrator | ApiResponse>{
@@ -49,7 +49,7 @@ export class AdministratorController {
 
     }
 
-    @Post(':id')
+    @Patch(':id')
     @UseGuards(RoleCheckGuard)
     @AllowToRoles('administrator')
     edit(@Param('id') id: number, @Body() data:EditAdministratorDto):Promise<Administrator | ApiResponse>{

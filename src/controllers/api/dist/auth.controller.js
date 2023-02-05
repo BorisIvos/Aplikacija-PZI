@@ -141,7 +141,7 @@ var AuthController = /** @class */ (function () {
         __param(0, common_1.Body()), __param(1, common_1.Req())
     ], AuthController.prototype, "doAdministratorLogin");
     __decorate([
-        common_1.Put('user/register') // PUT http://localhost:3000/auth/user/register/
+        common_1.Post('user/register') // PUT http://localhost:3000/auth/user/register/
         ,
         __param(0, common_1.Body())
     ], AuthController.prototype, "userRegister");

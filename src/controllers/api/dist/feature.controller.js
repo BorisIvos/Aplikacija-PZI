@@ -9,6 +9,8 @@ exports.__esModule = true;
 var common_1 = require("@nestjs/common");
 var feature_entity_1 = require("src/entities/feature.entity");
 var crud_1 = require("@nestjsx/crud");
+var role_checker_guard_1 = require("src/misc/role.checker.guard");
+var allow_to_roles_descriptor_1 = require("src/misc/allow.to.roles.descriptor");
 var FeatureController = /** @class */ (function () {
     function FeatureController(service) {
         this.service = service;
@@ -37,6 +39,39 @@ var FeatureController = /** @class */ (function () {
                     articles: {
                         eager: false
                     }
+                }
+            },
+            routes: {
+                only: [
+                    "createOneBase",
+                    "createManyBase",
+                    "getManyBase",
+                    "getOneBase",
+                    "updateOneBase",
+                ],
+                createOneBase: {
+                    decorators: [
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
+                    ]
+                },
+                createManyBase: {
+                    decorators: [
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
+                    ]
+                },
+                updateOneBase: {
+                    decorators: [
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        allow_to_roles_descriptor_1.AllowToRoles('administrator'),
+                    ]
+                },
+                getManyBase: {
+                    decorators: [
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        allow_to_roles_descriptor_1.AllowToRoles('administrator', 'user')
+                    ]
                 }
             }
         })
