@@ -1,0 +1,1 @@
+{"version":3,"sources":["edit.article.in.cart.dto.ts"],"names":[],"mappings":";;AAAA;IAAA;IAGA,CAAC;IAAD,2BAAC;AAAD,CAHA,AAGC,IAAA;AAHY,oDAAoB","file":"edit.article.in.cart.dto.js","sourcesContent":["export class EditArticleInCartDto {\r\n    articleId: number;\r\n    quantity: number;\r\n}"]}

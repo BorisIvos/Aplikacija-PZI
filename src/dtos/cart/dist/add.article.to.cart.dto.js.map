@@ -1,0 +1,1 @@
+{"version":3,"sources":["add.article.to.cart.dto.ts"],"names":[],"mappings":";;AAAA;IAAA;IAGA,CAAC;IAAD,0BAAC;AAAD,CAHA,AAGC,IAAA;AAHY,kDAAmB","file":"add.article.to.cart.dto.js","sourcesContent":["export class AddArticleToCartDto {\r\n    articleId: number;\r\n    quantity: number;\r\n}"]}

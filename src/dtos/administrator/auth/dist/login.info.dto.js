@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+exports.LoginInfoDto = void 0;
 var LoginInfoDto = /** @class */ (function () {
     function LoginInfoDto(id, identity, jwt) {
         this.id = id;
@@ -9,5 +10,3 @@ var LoginInfoDto = /** @class */ (function () {
     return LoginInfoDto;
 }());
 exports.LoginInfoDto = LoginInfoDto;
-
-//# sourceMappingURL=login.info.dto.js.map

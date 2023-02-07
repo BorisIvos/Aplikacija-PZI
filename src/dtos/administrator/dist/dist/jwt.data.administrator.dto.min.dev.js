@@ -1,0 +1,19 @@
+"use strict";
+
+exports.__esModule = !0;
+
+var JwtDataAdministatorDto = function () {
+  function t() {}
+
+  return t.prototype.toPlainObject = function () {
+    return {
+      administratorId: this.administratorId,
+      username: this.username,
+      exp: this.exp,
+      ip: this.ip,
+      ua: this.ua
+    };
+  }, t;
+}();
+
+exports.JwtDataAdministatorDto = JwtDataAdministatorDto;

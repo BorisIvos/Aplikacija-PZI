@@ -18,10 +18,12 @@ import { AuthController } from './controllers/api/auth.controller';
 import { CategoryController } from './controllers/api/category.controller';
 import { FeatureController } from './controllers/api/feature.controller';
 import { AppController } from './controllers/app.controller';
+import { UserCartController } from './controllers/user.cart.controller';
 import { AuthMidleware } from './middlewares/auth.middleware';
 import { AdministratorService } from './services/administrator/administrator.service';
 import { CategoryService } from './services/administrator/category/category.service';
 import { ArticleService } from './services/article/article.service';
+import { CartService } from './services/cart/cart.service';
 import { FeatureService } from './services/feature/feature.service';
 import { PhotoService } from './services/photo/photo.services';
 import { UserService } from './services/user/user.service';
@@ -75,6 +77,7 @@ DatabaseConfiguration
     ArticleController,
     AuthController,
     FeatureController,
+    UserCartController,
 
   
   
@@ -86,6 +89,7 @@ DatabaseConfiguration
     PhotoService,
     FeatureService,
     UserService,
+    CartService,
 
   ],
   exports:[
