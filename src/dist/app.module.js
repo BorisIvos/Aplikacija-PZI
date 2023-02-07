@@ -32,6 +32,7 @@ var administrator_service_1 = require("./services/administrator/administrator.se
 var category_service_1 = require("./services/administrator/category/category.service");
 var article_service_1 = require("./services/article/article.service");
 var cart_service_1 = require("./services/cart/cart.service");
+var order_service_1 = require("./services/cart/order.service");
 var feature_service_1 = require("./services/feature/feature.service");
 var photo_services_1 = require("./services/photo/photo.services");
 var user_service_1 = require("./services/user/user.service");
@@ -99,6 +100,7 @@ var AppModule = /** @class */ (function () {
                 feature_service_1.FeatureService,
                 user_service_1.UserService,
                 cart_service_1.CartService,
+                order_service_1.OrderService,
             ],
             exports: [
                 administrator_service_1.AdministratorService,

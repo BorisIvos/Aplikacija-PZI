@@ -111,24 +111,44 @@ var UserCartController = /** @class */ (function () {
             });
         });
     };
+    UserCartController.prototype.makeOrder = function (req) {
+        return __awaiter(this, void 0, Promise, function () {
+            var cart;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getActiveCartForUserId(req.token.id)];
+                    case 1:
+                        cart = _a.sent();
+                        return [4 /*yield*/, this.orderService.add(cart.cartId)];
+                    case 2: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     __decorate([
         common_1.Get(),
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('user'),
         __param(0, common_1.Req())
     ], UserCartController.prototype, "getCurrentCart");
     __decorate([
         common_1.Post('addToCart'),
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('user'),
         __param(0, common_1.Body()), __param(1, common_1.Req())
     ], UserCartController.prototype, "addToCart");
     __decorate([
         common_1.Post(),
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('user'),
         __param(0, common_1.Body()), __param(1, common_1.Req())
     ], UserCartController.prototype, "changeQuantity");
+    __decorate([
+        common_1.Post('makeOrder'),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
+        allow_to_roles_descriptor_1.AllowToRoles('user'),
+        __param(0, common_1.Req())
+    ], UserCartController.prototype, "makeOrder");
     UserCartController = __decorate([
         common_1.Controller('api/user/cart')
     ], UserCartController);

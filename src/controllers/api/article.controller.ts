@@ -16,7 +16,7 @@ import { DeleteResult } from "typeorm";
 import { EditArticleDto } from "src/dtos/article/edit.article.dtos";
 
 import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
-import { RoleCheckGuard } from "src/misc/role.checker.guard";
+import { RoleCheckedGuard } from "src/misc/role.checker.guard";
 
 
 
@@ -61,7 +61,7 @@ import { RoleCheckGuard } from "src/misc/role.checker.guard";
         ],
         getOneBase: {
             decorators: [
-                UseGuards(RoleCheckGuard),
+                UseGuards(RoleCheckedGuard),
                 AllowToRoles('administrator', 'user')
             ],
         },
@@ -78,21 +78,21 @@ export class ArticleController {
         ) { }
     
     @Post()  //Post http://localhost:3000/api/article/createFull/
-    @UseGuards(RoleCheckGuard)
+    @UseGuards(RoleCheckedGuard)
     @AllowToRoles('administrator')
     createFullArticle(@Body() data: AddArticleDto){
         return this.service.createFullArticle(data);
     }
 
     @Patch(':id')    //PATCH http://localhost:3000/api/article/2/
-    @UseGuards(RoleCheckGuard)
+    @UseGuards(RoleCheckedGuard)
     @AllowToRoles('administrator')
     editFullArticle(@Param('id') id:number, @Body() data: EditArticleDto) {
         return this.service.editFullArticle(id, data);
     }
 
     @Post(':id/uploadPhoto/') // POST http://localhost:3000/api/article/:id/uploadPhoto
-    @UseGuards(RoleCheckGuard)
+    @UseGuards(RoleCheckedGuard)
     @AllowToRoles('administrator')
     @UseInterceptors(
         FileInterceptor('photo', {
@@ -210,7 +210,7 @@ export class ArticleController {
     }
    // http://localhost:3000/api/article/1/deltePhoto/45/
     @Delete(':articleId/deltePhoto/:photoId')
-    @UseGuards(RoleCheckGuard)
+    @UseGuards(RoleCheckedGuard)
     @AllowToRoles('administrator')
     public async deltePhoto(
         @Param('articleId') articleId: number,

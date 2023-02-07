@@ -177,21 +177,21 @@ var ArticleController = /** @class */ (function () {
     __decorate([
         common_1.Post() //Post http://localhost:3000/api/article/createFull/
         ,
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Body())
     ], ArticleController.prototype, "createFullArticle");
     __decorate([
         common_1.Patch(':id') //PATCH http://localhost:3000/api/article/2/
         ,
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Param('id')), __param(1, common_1.Body())
     ], ArticleController.prototype, "editFullArticle");
     __decorate([
         common_1.Post(':id/uploadPhoto/') // POST http://localhost:3000/api/article/:id/uploadPhoto
         ,
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         common_1.UseInterceptors(platform_express_1.FileInterceptor('photo', {
             storage: multer_1.diskStorage({
@@ -240,7 +240,7 @@ var ArticleController = /** @class */ (function () {
     ], ArticleController.prototype, "uploadPhoto");
     __decorate([
         common_1.Delete(':articleId/deltePhoto/:photoId'),
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Param('articleId')),
         __param(1, common_1.Param('photoId'))
@@ -284,7 +284,7 @@ var ArticleController = /** @class */ (function () {
                 ],
                 getOneBase: {
                     decorators: [
-                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
                         allow_to_roles_descriptor_1.AllowToRoles('administrator', 'user')
                     ]
                 }

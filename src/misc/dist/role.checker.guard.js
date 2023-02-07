@@ -7,11 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 var common_1 = require("@nestjs/common");
-var RoleCheckGuard = /** @class */ (function () {
-    function RoleCheckGuard(reflector) {
+var RoleCheckedGuard = /** @class */ (function () {
+    function RoleCheckedGuard(reflector) {
         this.reflector = reflector;
     }
-    RoleCheckGuard.prototype.canActivate = function (context) {
+    RoleCheckedGuard.prototype.canActivate = function (context) {
         var req = context.switchToHttp().getRequest();
         var role = req.token.role;
         var allowedToRoles = this
@@ -21,12 +21,14 @@ var RoleCheckGuard = /** @class */ (function () {
             return false;
         }
         return true;
+        // true  - odobravamo izvrsavanje metoda
+        // false - ne odobravamo izvrsavanje metoda // throw new HttpExc...
     };
-    RoleCheckGuard = __decorate([
+    RoleCheckedGuard = __decorate([
         common_1.Injectable()
-    ], RoleCheckGuard);
-    return RoleCheckGuard;
+    ], RoleCheckedGuard);
+    return RoleCheckedGuard;
 }());
-exports.RoleCheckGuard = RoleCheckGuard;
+exports.RoleCheckedGuard = RoleCheckedGuard;
 
 //# sourceMappingURL=role.checker.guard.js.map

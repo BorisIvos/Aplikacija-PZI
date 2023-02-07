@@ -82,25 +82,25 @@ var AdministratorController = /** @class */ (function () {
     };
     __decorate([
         common_1.Get(),
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         common_1.SetMetadata('allow_to_roles', ['administrator', 'user']),
         allow_to_roles_descriptor_1.AllowToRoles('administrator')
     ], AdministratorController.prototype, "getAll");
     __decorate([
         common_1.Get(':id'),
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Param('id'))
     ], AdministratorController.prototype, "getById");
     __decorate([
         common_1.Post(),
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Body())
     ], AdministratorController.prototype, "add");
     __decorate([
         common_1.Patch(':id'),
-        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
         __param(0, common_1.Param('id')), __param(1, common_1.Body())
     ], AdministratorController.prototype, "edit");

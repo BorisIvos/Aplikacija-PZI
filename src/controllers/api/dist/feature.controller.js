@@ -51,25 +51,25 @@ var FeatureController = /** @class */ (function () {
                 ],
                 createOneBase: {
                     decorators: [
-                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
                         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
                     ]
                 },
                 createManyBase: {
                     decorators: [
-                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
                         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
                     ]
                 },
                 updateOneBase: {
                     decorators: [
-                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
                         allow_to_roles_descriptor_1.AllowToRoles('administrator'),
                     ]
                 },
                 getManyBase: {
                     decorators: [
-                        common_1.UseGuards(role_checker_guard_1.RoleCheckGuard),
+                        common_1.UseGuards(role_checker_guard_1.RoleCheckedGuard),
                         allow_to_roles_descriptor_1.AllowToRoles('administrator', 'user')
                     ]
                 }

@@ -24,6 +24,7 @@ import { AdministratorService } from './services/administrator/administrator.ser
 import { CategoryService } from './services/administrator/category/category.service';
 import { ArticleService } from './services/article/article.service';
 import { CartService } from './services/cart/cart.service';
+import { OrderService } from './services/cart/order.service';
 import { FeatureService } from './services/feature/feature.service';
 import { PhotoService } from './services/photo/photo.services';
 import { UserService } from './services/user/user.service';
@@ -90,6 +91,7 @@ DatabaseConfiguration
     FeatureService,
     UserService,
     CartService,
+    OrderService,
 
   ],
   exports:[
