@@ -198,6 +198,76 @@ var ArticleService = /** @class */ (function (_super) {
             });
         });
     };
+    ArticleService.prototype.search = function (data) {
+        return __awaiter(this, void 0, Promise, function () {
+            var builder, _i, _a, feature, orderBy, orderDirection, page, perPage, articles;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.article.createQueryBuilder("article")];
+                    case 1:
+                        builder = _b.sent();
+                        builder.innerJoinAndSelect("article.articlePrices", "ap", "ap.createdAt = (SELECT MAX(ap.created_at) FROM article_price AS ap WHERE ap.article_id = article.article_id)" // ovo nije najbolji nacin u praksi da se uradi
+                        );
+                        // pametnije rjesenje (zahtjeva triger_article_price_ai)
+                        // "app.current = 1
+                        builder.leftJoinAndSelect("article.articleFeatures", "af");
+                        builder.leftJoinAndSelect("article.features", "features");
+                        builder.leftJoinAndSelect("article.photos", "photos");
+                        builder.where('article.categoryId = :catId', { catId: data.categoryId });
+                        if (data.keywords && data.keywords.length > 0) {
+                            builder.andWhere("(\n                                article.name LIKE :kw OR\n                                article.excerpt LIKE :kw OR\n                                article.description LIKE :kw\n                              )", { kw: '%' + data.keywords.trim() + '%' });
+                        }
+                        if (data.priceMin && typeof data.priceMin === 'number') {
+                            builder.andWhere('ap.price >= :min', { min: data.priceMin });
+                        }
+                        if (data.priceMax && typeof data.priceMax === 'number') {
+                            builder.andWhere('ap.price <= :max', { max: data.priceMax });
+                        }
+                        if (data.features && data.features.length > 0) {
+                            for (_i = 0, _a = data.features; _i < _a.length; _i++) {
+                                feature = _a[_i];
+                                builder.andWhere('af.featureId = :fId AND af.value IN (:fVals)', {
+                                    fId: feature.featureId,
+                                    fVals: feature.values
+                                });
+                            }
+                        }
+                        orderBy = 'article.name';
+                        orderDirection = 'ASC';
+                        if (data.orderBy) {
+                            orderBy = data.orderBy;
+                            if (orderBy === 'price') {
+                                orderBy = 'ap.price';
+                            }
+                            if (orderBy === 'name') {
+                                orderBy = 'article.name';
+                            }
+                        }
+                        if (data.orderDirection) {
+                            orderDirection = data.orderDirection;
+                        }
+                        builder.orderBy(orderBy, orderDirection);
+                        page = 0;
+                        perPage = 25;
+                        if (data.page && typeof data.page === 'number') {
+                            page = data.page;
+                        }
+                        if (data.itemsPerPage && typeof data.itemsPerPage === 'number') {
+                            perPage = data.itemsPerPage;
+                        }
+                        builder.skip(page * perPage);
+                        builder.take(perPage);
+                        return [4 /*yield*/, builder.getMany()];
+                    case 2:
+                        articles = _b.sent();
+                        if (articles.length === 0) {
+                            return [2 /*return*/, new api_response_class_1.ApiResponse("ok", 0, "No articles found for these search parameters.")];
+                        }
+                        return [2 /*return*/, articles];
+                }
+            });
+        });
+    };
     ArticleService = __decorate([
         common_1.Injectable(),
         __param(0, typeorm_1.InjectRepository(article_entity_1.Article)),

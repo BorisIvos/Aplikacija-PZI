@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 exports.__esModule = true;
 var typeorm_1 = require("typeorm");
 var cart_entity_1 = require("./cart.entity");
+var Validator = require("class-validator");
 var User = /** @class */ (function () {
     function User() {
     }
@@ -19,6 +20,12 @@ var User = /** @class */ (function () {
             type: "varchar",
             unique: true,
             length: 255
+        }),
+        Validator.IsNotEmpty(),
+        Validator.IsEmail({
+            allow_ip_domain: false,
+            allow_utf8_local_part: true,
+            require_tld: true
         })
     ], User.prototype, "email");
     __decorate([
@@ -26,13 +33,21 @@ var User = /** @class */ (function () {
             type: "varchar",
             name: "password_hash",
             length: 128
-        })
+        }),
+        Validator.IsNotEmpty(),
+        Validator.IsHash('sha512')
     ], User.prototype, "passwordHash");
     __decorate([
-        typeorm_1.Column({ type: "varchar", length: 64 })
+        typeorm_1.Column({ type: "varchar", length: 64 }),
+        Validator.IsNotEmpty(),
+        Validator.IsString(),
+        Validator.Length(2, 64)
     ], User.prototype, "forename");
     __decorate([
-        typeorm_1.Column({ type: "varchar", length: 64 })
+        typeorm_1.Column({ type: "varchar", length: 64 }),
+        Validator.IsNotEmpty(),
+        Validator.IsString(),
+        Validator.Length(2, 64)
     ], User.prototype, "surname");
     __decorate([
         typeorm_1.Column({
@@ -40,10 +55,15 @@ var User = /** @class */ (function () {
             name: "phone_number",
             unique: true,
             length: 24
-        })
+        }),
+        Validator.IsNotEmpty(),
+        Validator.IsPhoneNumber(null)
     ], User.prototype, "phoneNumber");
     __decorate([
-        typeorm_1.Column({ type: "text", name: "postal_address" })
+        typeorm_1.Column({ type: "text", name: "postal_address" }),
+        Validator.IsNotEmpty(),
+        Validator.IsString(),
+        Validator.Length(10, 512)
     ], User.prototype, "postalAddress");
     __decorate([
         typeorm_1.OneToMany(function () { return cart_entity_1.Cart; }, function (cart) { return cart.user; })

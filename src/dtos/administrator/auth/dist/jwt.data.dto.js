@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-exports.JwtDataDto = void 0;
 var JwtDataDto = /** @class */ (function () {
     function JwtDataDto() {
     }
@@ -8,7 +7,7 @@ var JwtDataDto = /** @class */ (function () {
         return {
             role: this.role,
             id: this.id,
-            identity: this.identity,
+            username: this.identity,
             exp: this.exp,
             ip: this.ip,
             ua: this.ua
@@ -17,3 +16,5 @@ var JwtDataDto = /** @class */ (function () {
     return JwtDataDto;
 }());
 exports.JwtDataDto = JwtDataDto;
+
+//# sourceMappingURL=jwt.data.dto.js.map

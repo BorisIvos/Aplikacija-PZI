@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var common_1 = require("@nestjs/common");
 var core_1 = require("@nestjs/core");
 var storage_config_1 = require("config/storage.config");
 var app_module_1 = require("./app.module");
@@ -52,6 +53,7 @@ function bootstrap() {
                         maxAge: storage_config_1.StorageConfig.photo.maxAge,
                         index: false
                     });
+                    app.useGlobalPipes(new common_1.ValidationPipe());
                     return [4 /*yield*/, app.listen(3000)];
                 case 2:
                     _a.sent();

@@ -5,12 +5,13 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from "typeorm";
 import { Article } from "./article.entity";
 import { Feature } from "./feature.entity";
+import * as Validator from 'class-validator';
 
-@Index("fk_category_parent_category_id", ["parentCategoryId"], {})
+@Index("fk_category_parent__category_id", ["parentCategoryId"], {})
 @Index("uq_category_image_path", ["imagePath"], { unique: true })
 @Index("uq_category_name", ["name"], { unique: true })
 @Entity("category")
@@ -19,38 +20,59 @@ export class Category {
   categoryId: number;
 
   @Column({
-    type:"varchar",
+    type: "varchar",
     unique: true,
     length: 32
   })
+  @Validator.IsNotEmpty()
+  @Validator.IsString()
+  @Validator.Length(5, 32)
   name: string;
 
   @Column({
-    type:"varchar",
+    type: "varchar",
     name: "image_path",
     unique: true,
     length: 128
   })
+  @Validator.IsNotEmpty()
+  @Validator.IsString()
+  @Validator.Length(1, 128)
   imagePath: string;
 
-  @Column({type:"int", name: "parent_category_id", nullable: true, unsigned: true })
+  @Column({
+    type: "int",
+    name: "parent_category_id",
+    nullable: true,
+    unsigned: true
+  })
   parentCategoryId: number | null;
 
-  @OneToMany(() => Article, (article) => article.category)
+  @OneToMany(
+    () => Article,
+    article => article.category
+  )
   articles: Article[];
 
-  @ManyToOne(() => Category, (category) => category.categories, {
-    onDelete: "RESTRICT",
-    onUpdate: "CASCADE",
-  })
+  @ManyToOne(
+    () => Category,
+    category => category.categories,
+    { onDelete: "NO ACTION", onUpdate: "CASCADE" }
+  )
   @JoinColumn([
-    { name: "parent_category_id", referencedColumnName: "categoryId" },
+    { name: "parent_category_id", referencedColumnName: "categoryId" }
   ])
   parentCategory: Category;
 
-  @OneToMany(() => Category, (category) => category.parentCategory)
+  @OneToMany(
+    () => Category,
+    category => category.parentCategory
+  )
   categories: Category[];
 
-  @OneToMany(() => Feature, (feature) => feature.category)
+  @OneToMany(
+    () => Feature,
+    feature => feature.category
+  )
   features: Feature[];
 }
